@@ -21,7 +21,7 @@ body{
     height: 70%;
 }
 .container{
-    width: 70%;
+    width: 80%;
     height: 80%;
     display: flex;
     align-items: center;
@@ -41,14 +41,12 @@ body{
 }
 
 .icons_language{
-    width: 67%;
+    width: 79%;
     margin-bottom: 1%;
 }
 
-
-
 .container_texts{
-    width: 30%;
+    width: 35%;
     height: 80%;
     /*background-color: #00ffff;*/
     display: flex;
@@ -145,7 +143,7 @@ body{
     }
 
     .container_texts{
-        width: 70%;
+        width: 80%;
         height: 45%;
         align-items: center;
         text-align: center;
