@@ -5,6 +5,9 @@ const text1 = document.getElementById('text_1');
 const text2 = document.getElementById('text_2');
 const data = document.getElementById('data');
 
+const inputDolar = document.getElementById('input_dolar');
+const inputReal = document.getElementById('input_real');
+
 const dateNow = new Date();
 const monthNowBR = dateNow.toLocaleString('pt-BR', { month: 'long' });
 const monthNowUS = dateNow.toLocaleString('en-US', { month: 'long' });
@@ -12,7 +15,8 @@ const dayNow = dateNow.getDate();
 
 const monthDayBR = `${dayNow} de ${monthNowBR.charAt(0).toUpperCase() + monthNowBR.slice(1)}`;
 const monthDayUS = `${monthNowUS.charAt(0).toUpperCase() + monthNowUS.slice(1)} ${dayNow}`;
- 
+
+let dolarbrr = null
 
 async function getDolarValue(){
     try{
@@ -20,6 +24,7 @@ async function getDolarValue(){
         const data = await res.json();
 
         const dolarBrValueNow = parseFloat(data.USDBRL.bid)
+        dolarbrr = parseFloat(data.USDBRL.bid)
         return dolarBrValueNow;
     } catch (err){
         console.log("Error to search reais: ", err);
@@ -33,19 +38,21 @@ getDolarValue().then(value =>{
         messages.portuguese.text2 = `${dolarBr} Reais Brasileiros`;
         messages.english.text2 = `${dolarBr} Brazilian Real`;
 
-        text2.textContent = messages[currentLanguage].text2
+        text2.textContent = messages[currentLanguage].text2;
+
+        inputReal.value = dolarBr;
     };
 });
 
 
 let messages = {
     english: {
-        text1: "1 United States Dollar",
+        text1: "1 United States Dollar =",
         text2: "",
         data: monthDayUS
     },
     portuguese: {
-        text1: "1 Dólar Estadunidense",
+        text1: "1 Dólar Estadunidense =",
         text2: "",
         data: monthDayBR
     }
@@ -67,3 +74,23 @@ function languageChange(language){
 };
 
 
+inputDolar.value = 1;
+
+inputDolar.addEventListener('input', () => {
+    const dolarValue = inputDolar.value;
+    if (dolarValue != '') {
+        inputReal.value = (dolarValue * dolarbrr).toFixed(2);
+    } else {
+        inputReal.value = '';
+    }
+});
+
+inputReal.addEventListener('input', () => {
+    const realValue = inputReal.value;
+    if (inputReal.value === ''){
+        inputDolar.value = ''
+    } else {
+        inputDolar.value = (realValue / dolarbrr).toFixed(2);
+    }
+
+});

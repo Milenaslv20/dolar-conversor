@@ -114,6 +114,17 @@ body{
     color: #ffffffd0;
 }
 
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .line_input{
     width: 0.1%;
     height: 60%;
