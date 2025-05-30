@@ -12,27 +12,52 @@ const dayNow = dateNow.getDate();
 
 const monthDayBR = `${dayNow} de ${monthNowBR.charAt(0).toUpperCase() + monthNowBR.slice(1)}`;
 const monthDayUS = `${monthNowUS.charAt(0).toUpperCase() + monthNowUS.slice(1)} ${dayNow}`;
+ 
+
+async function getDolarValue(){
+    try{
+        const res = await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+        const data = await res.json();
+
+        const dolarBrValueNow = parseFloat(data.USDBRL.bid)
+        return dolarBrValueNow;
+    } catch (err){
+        console.log("Error to search reais: ", err);
+        return null;
+    }
+} 
+getDolarValue().then(value =>{
+    if(value != null){
+        const dolarBr = value.toFixed(2);
+
+        messages.portuguese.text2 = `${dolarBr} Reais Brasileiros`;
+        messages.english.text2 = `${dolarBr} Brazilian Real`;
+
+        text2.textContent = messages[currentLanguage].text2
+    };
+});
+
 
 let messages = {
     english: {
         text1: "1 United States Dollar",
-        text2: "5.66 Brazilian Real",
+        text2: "",
         data: monthDayUS
     },
     portuguese: {
         text1: "1 Dólar Estadunidense",
-        text2: "5.66 Reais Brasileiros",
+        text2: "",
         data: monthDayBR
     }
 };
 
+let currentLanguage = "portuguese";
 window.addEventListener('DOMContentLoaded', () => {
     text1.textContent = messages['portuguese'].text1;
     text2.textContent = messages['portuguese'].text2;
     data.textContent = messages['portuguese'].data;
 });
 
-let currentLanguage = "english";
 function languageChange(language){
     currentLanguage = language;
 
@@ -40,4 +65,5 @@ function languageChange(language){
     text2.textContent = messages[currentLanguage].text2;
     data.textContent = messages[currentLanguage].data;
 };
+
 
